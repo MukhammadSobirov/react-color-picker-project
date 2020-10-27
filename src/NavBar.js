@@ -1,18 +1,24 @@
 import React, { Component } from "react";
-import {Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, Snackbar } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
-import "./NavBar.css"
+import "./NavBar.css";
 
 export default class NavBar extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {format: "hex"}
+    this.state = { format: "hex", open: false };
     this.handleChange = this.handleChange.bind(this);
+    this.closeSnackbar = this.closeSnackbar.bind(this);
   }
-  handleChange(e){
-    this.setState({format: e.target.value});
-    this.props.handleChange(e.target.value)
+  closeSnackbar() {
+    this.setState({ open: false });
+  }
+  handleChange(e) {
+    this.setState({ format: e.target.value, open: true });
+    this.props.handleChange(e.target.value);
   }
   render() {
     return (
@@ -34,11 +40,33 @@ export default class NavBar extends Component {
         </div>
         <div className="select-container">
           <Select value={this.state.format} onChange={this.handleChange}>
-              <MenuItem value="hex">HEX - #fffff</MenuItem>
-              <MenuItem value="rgb">RGB - rgb(255, 255, 255, 255)</MenuItem>
-              <MenuItem value="rgba">RGBA - rgba(255, 255, 255, 255, 0.1)</MenuItem>
+            <MenuItem value="hex">HEX - #fffff</MenuItem>
+            <MenuItem value="rgb">RGB - rgb(255, 255, 255, 255)</MenuItem>
+            <MenuItem value="rgba">
+              RGBA - rgba(255, 255, 255, 255, 0.1)
+            </MenuItem>
           </Select>
         </div>
+        <Snackbar
+          // onClose={this.closeSnackbar}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={this.state.open}
+          autoHideDuration={3000}
+          message={<span id="msg-id">Format Changed</span>}
+          ContentProps={{
+            "aria-describedby": "msg-id",
+          }}
+          action={[
+            <IconButton
+              onClick={this.closeSnackbar}
+              color="inherit"
+              key="close"
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
       </nav>
     );
   }

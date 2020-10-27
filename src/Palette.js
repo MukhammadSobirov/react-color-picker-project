@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ColorBox from "./ColorBox";
 import "./Palette.css";
-import NavBar from "./NavBar"
-
+import NavBar from "./NavBar";
 
 class Palette extends Component {
   constructor(props) {
@@ -11,8 +10,8 @@ class Palette extends Component {
     this.changeLevel = this.changeLevel.bind(this);
     this.changeFormat = this.changeFormat.bind(this);
   }
-  changeFormat(evt){
-    this.setState({format: evt})
+  changeFormat(evt) {
+    this.setState({ format: evt });
   }
   changeLevel(newLevel) {
     this.setState({ level: newLevel });
@@ -25,7 +24,11 @@ class Palette extends Component {
     ));
     return (
       <div className="Palette">
-        <NavBar level={level} changeLevel={this.changeLevel} handleChange={this.changeFormat}/>
+        <NavBar
+          level={level}
+          changeLevel={this.changeLevel}
+          handleChange={this.changeFormat}
+        />
         <div className="Palette-colors">
           {/*color boxes*/}
           {colorBoxes}
