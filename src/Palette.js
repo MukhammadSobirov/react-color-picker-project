@@ -26,6 +26,7 @@ class Palette extends Component {
         background={color[format]}
         name={color.name}
         paletteId={id}
+        showLink={true}
       />
     ));
     return (
