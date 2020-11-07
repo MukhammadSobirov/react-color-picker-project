@@ -11,12 +11,23 @@ import NewPalettesForm from "./NewPalettesForm";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { palettes: seedColors };
+    const savedPalettes = JSON.parse(window.localStorage.getItem("palettes"));
+    this.state = {palettes: savedPalettes || seedColors};
     this.savePalette = this.savePalette.bind(this);
     this.findPalette = this.findPalette.bind(this);
   }
   savePalette(newPalette) {
-    this.setState({ palettes: [...this.state.palettes, newPalette] });
+    this.setState(
+      {palettes: [...this.state.palettes, newPalette]},
+      this.syncLocalStorage
+    );
+  }
+  syncLocalStorage(){
+    //save palettes to local storage using json
+    window.localStorage.setItem(
+      "palettes",
+      JSON.stringify(this.state.palettes)
+    )
   }
   findPalette(id) {
     return this.state.palettes.find(function (palette) {
@@ -31,7 +42,11 @@ class App extends Component {
             exact
             path="/palette/new"
             render={(routeProps) => (
-              <NewPalettesForm savePalette={this.savePalette} palettes={this.state.palettes} {...routeProps} />
+              <NewPalettesForm
+                savePalette={this.savePalette}
+                palettes={this.state.palettes}
+                {...routeProps}
+              />
             )}
           />
           <Route
